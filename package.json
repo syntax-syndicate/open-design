@@ -14,7 +14,7 @@
     "dev": "next dev",
     "dev:all": "node scripts/dev-all.mjs",
     "build": "next build",
-    "preview": "next start",
+    "preview": "pnpm build && node daemon/cli.js --no-open",
     "test:e2e:live": "node --test scripts/runtime-adapter.e2e.live.test.mjs",
     "test": "vitest run",
     "typecheck": "tsc -b --noEmit",

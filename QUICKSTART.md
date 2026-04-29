@@ -29,7 +29,7 @@ Pair a skill with a design system and a single prompt produces a layout-appropri
 pnpm daemon            # just the daemon (no web UI build)
 pnpm dev               # just Next.js dev server on :3000
 pnpm build             # production build + static export to out/
-pnpm preview           # serve the Next.js production build locally
+pnpm preview           # build, then serve out/ through the daemon locally
 pnpm start             # build + daemon serving out/ (single-process prod mode)
 pnpm typecheck         # tsc -b --noEmit
 ```
