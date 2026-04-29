@@ -1,9 +1,10 @@
-node_modules
-dist
-out
-.next
+node_modules/
+dist/
+out/
+.next/
 .DS_Store
 *.log
+.vite
 
 # Local runtime data — auto-created by the daemon on first start.
 # Holds app.sqlite (project metadata), projects/<id>/ (per-project artifacts,
@@ -18,7 +19,11 @@ tsconfig.tsbuildinfo
 
 .claude-sessions/*
 
-.cursor/*
+.cursor/
+.agents/
+.opencode/
+.claude/
+.codex/
 
 # Commander task scratchpad; keep local task notes out of git by default.
 .task/
