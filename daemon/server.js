@@ -56,7 +56,11 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, '..');
-const STATIC_DIR = path.join(PROJECT_ROOT, 'dist');
+// Built web app lives in `out/` — that's where Next.js writes the static
+// export configured in next.config.ts. The folder name used to be `dist/`
+// when this project shipped with Vite; the daemon serves whatever the
+// frontend toolchain emits, no further config needed.
+const STATIC_DIR = path.join(PROJECT_ROOT, 'out');
 const SKILLS_DIR = path.join(PROJECT_ROOT, 'skills');
 const DESIGN_SYSTEMS_DIR = path.join(PROJECT_ROOT, 'design-systems');
 const ARTIFACTS_DIR = path.join(PROJECT_ROOT, '.od', 'artifacts');
@@ -1076,9 +1080,15 @@ export async function startServer({ port = 7456 } = {}) {
   });
 
   // SPA fallback for the built web app. Put this LAST so it never shadows
-  // /api routes. Only active when a dist/ exists (production mode).
+  // /api routes. Only active when out/ exists (production mode).
+  //
+  // Next.js's static export writes a single shell HTML at out/index.html
+  // for the optional catch-all route (`app/[[...slug]]/page.tsx`); project
+  // IDs aren't pre-rendered, so any unknown deep link (e.g. /projects/abc)
+  // needs to fall back to that shell so the client router can pick the
+  // right view at runtime.
   if (fs.existsSync(STATIC_DIR)) {
-    app.get(/^\/(?!api\/|artifacts\/).*/, (_req, res) => {
+    app.get(/^\/(?!api\/|artifacts\/|frames\/).*/, (_req, res) => {
       res.sendFile(path.join(STATIC_DIR, 'index.html'));
     });
   }
