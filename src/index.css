@@ -74,6 +74,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.od-loading-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  background: var(--bg-app);
+  font: 500 13px/1.4 var(--sans);
+}
+
 /* -------- Buttons --------------------------------------------------- */
 button {
   font: inherit;

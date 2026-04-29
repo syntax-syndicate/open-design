@@ -66,16 +66,16 @@ const env = {
   PORT: String(nextPort),
 };
 
-// We run via `shell: true` so the local `concurrently` bin resolves on
-// both POSIX and Windows. With shell mode and an args array, embedded
-// spaces would be re-split by the shell, so we hand it a fully-quoted
-// command string instead — `npm:daemon` is the shorthand for the daemon
-// script, and `next dev -p <port>` is invoked directly so we can pass the
-// resolved port without round-tripping through npm scripts.
-const command =
-  `concurrently -k -n daemon,web -c cyan,magenta ` +
-  `"npm:daemon" "next dev -p ${nextPort}"`;
-const child = spawn(command, { env, stdio: 'inherit', shell: true });
+// `npm:daemon` is the shorthand for the daemon script, and `next dev -p
+// <port>` is invoked directly so we can pass the resolved port without
+// round-tripping through npm scripts. Keep the port numeric before it reaches
+// the command string, and avoid shell interpretation on POSIX; Windows needs
+// shell mode so the local `.cmd` shim can resolve.
+const child = spawn(
+  'concurrently',
+  ['-k', '-n', 'daemon,web', '-c', 'cyan,magenta', 'npm:daemon', `next dev -p ${nextPort}`],
+  { env, stdio: 'inherit', shell: process.platform === 'win32' },
+);
 
 child.on('exit', (code, signal) => {
   if (signal) process.kill(process.pid, signal);

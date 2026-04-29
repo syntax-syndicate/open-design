@@ -14,7 +14,7 @@ const DAEMON_ORIGIN = `http://127.0.0.1:${DAEMON_PORT}`;
 // runtime — Next.js generates one shell HTML, the daemon falls back to it
 // for any non-API request, and the existing client router renders the right
 // view.
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV !== 'development';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
